@@ -1,0 +1,6 @@
+{
+  "name": "Norq Earbuds",
+  "description": "Premium and responsive website for Norq, a Canadian wireless earbuds brand, featuring interactive sections and an AI chatbot.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
