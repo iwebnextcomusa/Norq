@@ -1,6 +1,7 @@
-import { useState, useEffect, FormEvent } from "react";
+import { useState, useEffect, FormEvent, useRef } from "react";
 import {
   Volume2,
+  VolumeX,
   Bluetooth,
   MicOff,
   BatteryCharging,
@@ -38,8 +39,8 @@ import { FEATURES_DATA, SPECS_DATA, REVIEWS_DATA, FAQ_DATA, Feature } from "./ty
 
 // Images
 const heroSoundwaveBgImg = "https://io0zoar353xhsriq.public.blob.vercel-storage.com/Norq.mp4";
-const heroEarbudsImg = "https://io0zoar353xhsriq.public.blob.vercel-storage.com/norq_hero_earbuds_1783202232165.jpg";
-const chargingCaseImg = "https://io0zoar353xhsriq.public.blob.vercel-storage.com/norq_charging_case_1783202245664.jpg";
+const heroEarbudsImg = "https://io0zoar353xhsriq.public.blob.vercel-storage.com/norq_charging_case_1783202245664.jpg";
+const chargingCaseImg = "https://io0zoar353xhsriq.public.blob.vercel-storage.com/norq_hero_earbuds_1783202232165.jpg";
 
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -49,6 +50,18 @@ export default function App() {
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  const toggleVideoMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !videoRef.current.muted;
+      setIsVideoMuted(videoRef.current.muted);
+    } else {
+      setIsVideoMuted(!isVideoMuted);
+    }
+  };
 
   // Icon mapping helper
   const renderIcon = (iconName: string, className = "w-6 h-6") => {
@@ -126,10 +139,11 @@ export default function App() {
           <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#2f80ed]/20 rounded-full blur-[120px]" />
           {heroSoundwaveBgImg.endsWith(".mp4") ? (
             <video
+              ref={videoRef}
               src={heroSoundwaveBgImg}
               autoPlay
               loop
-              muted
+              muted={isVideoMuted}
               playsInline
               className={`w-full h-full object-cover opacity-25 sm:opacity-35 md:opacity-40 transition-all duration-700 ${
                 isDarkMode ? "mix-blend-screen" : "mix-blend-multiply opacity-20"
@@ -225,6 +239,32 @@ export default function App() {
             </div>
           </motion.div>
         </div>
+
+        {/* Audio control for background video */}
+        {heroSoundwaveBgImg.endsWith(".mp4") && (
+          <div className="absolute bottom-4 right-4 md:bottom-6 md:right-8 z-20">
+            <motion.button
+              onClick={toggleVideoMute}
+              className={`flex items-center gap-2 px-3.5 py-2 rounded-full text-xs font-semibold backdrop-blur-md transition-all border duration-300 shadow-lg ${
+                isDarkMode
+                  ? "bg-black/50 hover:bg-black/70 text-white border-white/10 hover:border-white/20"
+                  : "bg-white/50 hover:bg-white/70 text-[#111111] border-black/10 hover:border-black/20"
+              }`}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              title={isVideoMuted ? "Unmute sound" : "Mute sound"}
+              aria-label={isVideoMuted ? "Unmute sound" : "Mute sound"}
+              id="hero-video-audio-toggle"
+            >
+              {isVideoMuted ? (
+                <VolumeX size={14} className="text-gray-400" />
+              ) : (
+                <Volume2 size={14} className="text-[#2F80ED] animate-pulse" />
+              )}
+              <span>{isVideoMuted ? "Muted" : "Sound On"}</span>
+            </motion.button>
+          </div>
+        )}
       </header>
 
       {/* Features Section */}
