@@ -37,8 +37,9 @@ import Chatbot from "./components/Chatbot";
 import { FEATURES_DATA, SPECS_DATA, REVIEWS_DATA, FAQ_DATA, Feature } from "./types";
 
 // Images
-const heroEarbudsImg = "/src/assets/images/norq_hero_earbuds_1783202232165.jpg";
-const chargingCaseImg = "/src/assets/images/norq_charging_case_1783202245664.jpg";
+const heroSoundwaveBgImg = "https://io0zoar353xhsriq.public.blob.vercel-storage.com/Norq.mp4";
+const heroEarbudsImg = "https://io0zoar353xhsriq.public.blob.vercel-storage.com/norq_hero_earbuds_1783202232165.jpg";
+const chargingCaseImg = "https://io0zoar353xhsriq.public.blob.vercel-storage.com/norq_charging_case_1783202245664.jpg";
 
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(true);
@@ -120,8 +121,41 @@ export default function App() {
         id="overview"
         className="relative pt-24 pb-16 md:py-36 overflow-hidden max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 z-10"
       >
-        <div className="absolute inset-0 pointer-events-none overflow-hidden">
-          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#2f80ed]/10 rounded-full blur-[120px]" />
+        {/* Futuristic Background Picture behind text */}
+        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden select-none">
+          <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-[#2f80ed]/20 rounded-full blur-[120px]" />
+          {heroSoundwaveBgImg.endsWith(".mp4") ? (
+            <video
+              src={heroSoundwaveBgImg}
+              autoPlay
+              loop
+              muted
+              playsInline
+              className={`w-full h-full object-cover opacity-25 sm:opacity-35 md:opacity-40 transition-all duration-700 ${
+                isDarkMode ? "mix-blend-screen" : "mix-blend-multiply opacity-20"
+              }`}
+            />
+          ) : (
+            <img 
+              src={heroSoundwaveBgImg} 
+              alt="Futuristic Acoustic Waves" 
+              className={`w-full h-full object-cover opacity-25 sm:opacity-35 md:opacity-40 transition-all duration-700 ${
+                isDarkMode ? "mix-blend-screen" : "mix-blend-multiply opacity-20"
+              }`}
+              referrerPolicy="no-referrer"
+            />
+          )}
+          {/* Gradients to blend the background image perfectly */}
+          <div className={`absolute inset-0 bg-gradient-to-t ${
+            isDarkMode 
+              ? "from-[#111111] via-[#111111]/30 to-[#111111]" 
+              : "from-[#f5f5f5] via-[#f5f5f5]/30 to-[#f5f5f5]"
+          }`} />
+          <div className={`absolute inset-0 bg-gradient-to-r ${
+            isDarkMode 
+              ? "from-[#111111] via-transparent to-[#111111]" 
+              : "from-[#f5f5f5] via-transparent to-[#f5f5f5]"
+          }`} />
         </div>
 
         <div className="max-w-4xl mx-auto text-center relative z-10 flex flex-col items-center justify-center">
